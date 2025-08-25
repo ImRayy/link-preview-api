@@ -1,8 +1,12 @@
 import { Hono } from "hono";
 import { HTTPException } from "hono/http-exception";
 import { fetchLinkPreview } from "./features/link-preview.js";
+import verifyAPIKey from "./middlewares/verify-api-key.js";
+import type { HonoBindings } from "./types/hono.js";
 
-const app = new Hono();
+const app = new Hono<HonoBindings>();
+
+app.use("*", verifyAPIKey);
 
 app.get("/", (c) => {
   return c.text("link-preview-api");
